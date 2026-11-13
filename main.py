@@ -53,8 +53,9 @@ def lire_options(arguments=None):
     return parser.parse_args(arguments)
 
 def erreur(message):
-    raise NotImplementedError("P1 : erreur")
-
+    """Écrit le message sur STDERR et arrête le programme avec le code 1."""
+    print(f"Erreur : {message}", file=sys.stderr)
+    sys.exit(1)
 
 def grille_aleatoire(nb_cells, seed):
     raise NotImplementedError("P2 : grille_aleatoire")
