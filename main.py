@@ -82,8 +82,31 @@ def enregistrer_png(grille, dossier, iteration):
 
 
 def main():
-    raise NotImplementedError("P1 : main")
+    """Enchaîne options, grille initiale, générations et sorties."""
+    options = lire_options()
 
+    # Une grille arrive par un pipe ou une redirection : on la lit.
+    # Sinon (terminal), on crée une grille aléatoire.
+    if sys.stdin.isatty():
+        grille = grille_aleatoire(options.nb_cells, options.seed)
+    else:
+        try:
+            grille = lire_grille(sys.stdin.read())
+        except ValueError as exception:
+            erreur(f"grille invalide : {exception}")
+
+    # La génération 0 est la grille initiale ; on calcule jusqu'à max_iterations.
+    for iteration in range(options.max_iterations + 1):
+        if iteration > 0:
+            grille = generation_suivante(grille, options.periodic)
+        if options.output_type == "image":
+            enregistrer_png(grille, options.output_directory, iteration)
+
+    if options.output_type == "text":
+        afficher_grille(grille, options.max_iterations)
+    else:
+        nb_images = options.max_iterations + 1
+        print(f"Generation of {nb_images} images in directory {options.output_directory}")
 
 if __name__ == "__main__":
     main()
