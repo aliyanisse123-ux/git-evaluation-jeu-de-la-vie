@@ -111,11 +111,17 @@ def generation_suivante(grille, periodique):
 
 
 def afficher_grille(grille, iteration):
-    raise NotImplementedError("P4 : afficher_grille")
+    """Écrit le numéro de l'itération puis la grille sur la sortie standard."""
+    print(f"iteration: {iteration}")
+    for ligne in grille:
+        print(" ".join(str(cellule) for cellule in ligne))
 
 
 def enregistrer_png(grille, dossier, iteration):
-    raise NotImplementedError("P4 : enregistrer_png")
+    """Écrit l'image grid_XXXX.png de la génération dans le dossier"""
+    chemin = f"{dossier}/grid_{iteration:04d}.png"
+    taille_image = max(540, 2 * len(grille) + 1)
+    write_grid(grille, chemin, size=taille_image)
 
 
 def main():
