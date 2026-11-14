@@ -68,7 +68,16 @@ def grille_aleatoire(nb_cells, seed):
 
 
 def lire_grille(texte):
-    raise NotImplementedError("P2 : lire_grille")
+    """Transforme le texte reçu sur STDIN en grille.
+
+    Format : la taille N sur la première ligne, puis N lignes de N valeurs
+    0 ou 1 séparées par des espaces. Lève ValueError avec un message
+    explicite si le texte est vide ou mal formé.
+    """
+    # On garde les lignes non vides, découpées en valeurs.
+    lignes = [ligne.split() for ligne in texte.splitlines() if ligne.strip()]
+    taille = int(lignes[0][0])
+    return [[int(valeur) for valeur in rangee] for rangee in lignes[1:taille + 1]]
 
 
 def compter_voisins(grille, ligne, colonne, periodique):
