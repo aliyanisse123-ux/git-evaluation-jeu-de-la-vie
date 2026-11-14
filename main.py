@@ -118,7 +118,10 @@ def afficher_grille(grille, iteration):
 
 
 def enregistrer_png(grille, dossier, iteration):
-    raise NotImplementedError("P4 : enregistrer_png")
+    """Écrit l'image grid_XXXX.png de la génération dans le dossier"""
+    chemin = f"{dossier}/grid_{iteration:04d}.png"
+    taille_image = max(540, 2 * len(grille) + 1)
+    write_grid(grille, chemin, size=taille_image)
 
 
 def main():
