@@ -75,10 +75,32 @@ def lire_grille(texte):
     explicite si le texte est vide ou mal formé.
     """
     # On garde les lignes non vides, découpées en valeurs.
+    # splitlines() gère aussi les fins de ligne Windows.
     lignes = [ligne.split() for ligne in texte.splitlines() if ligne.strip()]
-    taille = int(lignes[0][0])
-    return [[int(valeur) for valeur in rangee] for rangee in lignes[1:taille + 1]]
+    if not lignes:
+        raise ValueError("la grille est vide")
+    if len(lignes[0]) != 1:
+        raise ValueError("la première ligne doit contenir seulement la taille")
+    try:
+        taille = int(lignes[0][0])
+    except ValueError:
+        raise ValueError(f"taille invalide : '{lignes[0][0]}'")
+    if taille <= 0:
+        raise ValueError(f"la taille doit être strictement positive : {taille}")
 
+    rangees = lignes[1:]
+    if len(rangees) != taille:
+        raise ValueError(f"{taille} lignes attendues, {len(rangees)} reçues")
+
+    grille = []
+    for numero, rangee in enumerate(rangees, start=1):
+        if len(rangee) != taille:
+            raise ValueError(f"ligne {numero} : {taille} valeurs attendues, {len(rangee)} reçues")
+        for valeur in rangee:
+            if valeur not in ("0", "1"):
+                raise ValueError(f"ligne {numero} : valeur '{valeur}' différente de 0 et 1")
+        grille.append([int(valeur) for valeur in rangee])
+    return grille
 
 def compter_voisins(grille, ligne, colonne, periodique):
     raise NotImplementedError("P3 : compter_voisins")
