@@ -58,7 +58,13 @@ def erreur(message):
     sys.exit(1)
 
 def grille_aleatoire(nb_cells, seed):
-    raise NotImplementedError("P2 : grille_aleatoire")
+    """Renvoie une grille aléatoire de nb_cells x nb_cells cellules.
+
+    La même graine et la même taille donnent toujours la même grille.
+    """
+    # Un générateur à part : la graine ne change pas le hasard du reste du programme.
+    generateur = random.Random(seed)
+    return [[generateur.choice([0, 1]) for _ in range(nb_cells)] for _ in range(nb_cells)]
 
 
 def lire_grille(texte):
