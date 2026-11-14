@@ -66,11 +66,49 @@ def lire_grille(texte):
 
 
 def compter_voisins(grille, ligne, colonne, periodique):
-    raise NotImplementedError("P3 : compter_voisins")
+    if not grille or not grille[0]:
+        return 0
+
+    nb_lignes = len(grille)
+    nb_colonnes = len(grille[0])
+    total = 0
+
+    for decalage_ligne in (-1, 0, 1):
+        for decalage_colonne in (-1, 0, 1):
+            if decalage_ligne == 0 and decalage_colonne == 0:
+                continue
+
+            ligne_voisin = ligne + decalage_ligne
+            colonne_voisin = colonne + decalage_colonne
+
+            if periodique == True:
+                ligne_voisin %= nb_lignes
+                colonne_voisin %= nb_colonnes
+            elif not (0 <= ligne_voisin < nb_lignes and 0 <= colonne_voisin < nb_colonnes):
+                continue
+
+            if grille[ligne_voisin][colonne_voisin] == 1:
+                total += 1
+
+    return total
 
 
 def generation_suivante(grille, periodique):
-    raise NotImplementedError("P3 : generation_suivante")
+    """Renvoie la génération suivante dans une nouvelle grille.
+
+    La grille reçue n'est pas modifiée pendant le calcul.
+    """
+    taille = len(grille)
+    nouvelle = []
+    for ligne in range(taille):
+        rangee = []
+        for colonne in range(taille):
+            voisines = compter_voisins(grille, ligne, colonne, periodique)
+            vivante = grille[ligne][colonne] == 1
+            # Naissance à 3 voisines, survie à 2 ou 3, sinon morte.
+            rangee.append(1 if voisines == 3 or (vivante and voisines == 2) else 0)
+        nouvelle.append(rangee)
+    return nouvelle
 
 
 def afficher_grille(grille, iteration):
